@@ -45,19 +45,15 @@ export class RecipesService {
         return [...this.recipes];
     }
     getRecipe(recipeId: string){
-        this.recipes.forEach( x => {
-            if(x.id == recipeId){
-                console.log(x);
-            }
-        })
+        return {
+            ...this.recipes.find( recipe => {
+                return recipe.id === recipeId;
+            })
+        };
     }
     deleteRecipe(recipeId: string){
-        var idx = null;
-        this.recipes.forEach( (x, index) => {
-            if(x.id == recipeId){
-                idx = index;
-            }
-        })
-        this.recipes.splice(idx,1);
+        this.recipes = this.recipes.filter(recipe => {
+            return recipe.id !== recipeId;
+        });
     }
 }
