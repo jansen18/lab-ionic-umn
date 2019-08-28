@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../recipes.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipesService } from '../recipes.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
     selector: 'app-recipe-detail',
@@ -11,7 +11,12 @@ import { AlertController } from '@ionic/angular';
 })
 export class RecipeDetailPage implements OnInit {
     loadedRecipe: Recipe;
-    constructor(private activatedRoute: ActivatedRoute, private recipesSvc: RecipesService, private router: Router, public alertController: AlertController) { }
+    constructor(
+        private activatedRoute: ActivatedRoute, 
+        private recipesSvc: RecipesService, 
+        private router: Router, 
+        public alertController: AlertController,
+        public toastController: ToastController) { }
 
     ngOnInit() {
         this.activatedRoute.paramMap.subscribe(
@@ -26,6 +31,7 @@ export class RecipeDetailPage implements OnInit {
     deleteRecipe(){
         this.recipesSvc.deleteRecipe(this.loadedRecipe.id);
         this.router.navigate(['/recipes']);
+        this.presentToast();
     }
 
     async presentAlert(){
@@ -44,5 +50,13 @@ export class RecipeDetailPage implements OnInit {
             ]
         })
         await alert.present();
+    }
+
+    async presentToast(){
+        const toast = await this.toastController.create({
+            message: 'Recipe has been deleted.',
+            duration: 2000
+        })
+        toast.present();
     }
 }
