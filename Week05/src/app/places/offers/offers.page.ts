@@ -15,4 +15,5 @@ export class OffersPage implements OnInit {
         this.loadedPlaces = this.placesSvc.getAllPlaces();
     }
 
+
 }
